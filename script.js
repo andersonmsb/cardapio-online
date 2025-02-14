@@ -47,16 +47,31 @@ function addToCart(name, price){
     if(existingItem){
         // se item exister aumenta quantidade + 1
         existingItem.qtd += 1
+        addCart()
     }else{
         cart.push({
             name,
             price,
             qtd: 1,
         })
+        addCart()
     }
 
     updateCartModal()
 
+}
+
+// função para alerta
+function addCart(){
+    Toastify({
+        text: "Adicionado ao carrinho",
+        duration: 600,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {background: "#22C55E",},
+    }).showToast()
 }
 
 // atualiza carrinho
@@ -72,8 +87,9 @@ function updateCartModal(){
         <div class="flex items-center justify-between">
             <div>
                 <p class="font-medium">${item.name}</p>
-                <p>Qtd: ${item.qtd}</p>
-                <p class="font-medium mt-2">R$ ${item.price.toFixed(2)}</p>
+                <p>Quantidade: ${item.qtd}</p>
+                <p>Valor: ${item.price.toFixed(2)}</p>
+                <p class="font-medium mt-2">Total: R$ ${(item.price*item.qtd).toFixed(2)}</p>
             </div>
 
             <button class="remove-cart-btn" data-name="${item.name}">
@@ -140,15 +156,11 @@ checkoutBtn.addEventListener("click", function(){
         Toastify({
             text: "O restaurante está fechado!",
             duration: 3000,
-            
-            
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "right", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-                background: "#ef4444",
-            },
+            style: {background: "#ef4444",},
         }).showToast()
 
         return
