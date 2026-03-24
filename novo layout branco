@@ -1604,7 +1604,7 @@ checkoutBtn.addEventListener("click", function(){
 // ── STATUS CHECK ─────────────────────────────
 function checkOpen(){
   const hora = new Date().getHours()
-  return hora >= 11 && hora < 22
+  return hora >= 18 && hora < 22
 }
 
 const statusBadge = document.getElementById("date-span")
