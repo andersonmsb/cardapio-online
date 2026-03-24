@@ -5,14 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- META TAG OG -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Insano Burguer">
   <meta property="og:image" content="https://cardapio-online-orcin.vercel.app/assets/logo.png">
@@ -20,360 +17,1395 @@
   <meta property="og:site_name" content="InsanoBurguer">
   <meta property="og:url" content="https://cardapio-online-orcin.vercel.app">
 
-
-  <link rel="stylesheet" href="./styles/output.css">
-
   <title>Insano Burguer</title>
 
+  <style>
+    :root {
+      --red: #E8220A;
+      --red-dark: #b51a08;
+      --red-light: #ff3a20;
+      --cream: #FFF8F0;
+      --charcoal: #1A1A1A;
+      --charcoal-soft: #2A2A2A;
+      --smoke: #f5f0ea;
+      --text-muted: #8a7e76;
+      --border: #e8ddd4;
+      --success: #22C55E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--charcoal);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* ── HEADER ─────────────────── */
+    .hero {
+      position: relative;
+      background: var(--charcoal);
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('./assets/bg.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.25;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(26,26,26,0.3) 0%, rgba(26,26,26,0.85) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 36px;
+      text-align: center;
+    }
+
+    .logo-ring {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid var(--red);
+      padding: 3px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-ring:hover { transform: scale(1.08) rotate(-3deg); }
+    .logo-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 8vw, 4.5rem);
+      letter-spacing: 0.04em;
+      color: #fff;
+      margin-top: 14px;
+      line-height: 1;
+    }
+
+    .hero-name span { color: var(--red); }
+
+    .hero-sub {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 18px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .status-badge.open { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .status-badge.closed { background: rgba(232,34,10,0.15); color: #ff6b55; border: 1px solid rgba(232,34,10,0.3); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .status-badge.open .status-dot { background: #22c55e; animation: pulse-dot 2s infinite; }
+    .status-badge.closed .status-dot { background: var(--red); }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    /* ── SECTION TABS ─────────────── */
+    .section-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .section-nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 14px 24px;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--red);
+      border-radius: 2px;
+      transition: width 0.25s ease;
+    }
+
+    .tab-btn.active { color: var(--red); }
+    .tab-btn.active::after { width: calc(100% - 32px); }
+
+    /* ── SECTION TITLE ──────────── */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      letter-spacing: 0.05em;
+      color: var(--charcoal);
+      padding: 28px 20px 6px;
+    }
+
+    .section-title span { color: var(--red); }
+
+    .section-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 0 20px 20px;
+      font-weight: 400;
+    }
+
+    /* ── PRODUCT GRID ─────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 0 16px 8px;
+    }
+
+    @media (min-width: 640px) {
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px 8px; }
+    }
+
+    @media (min-width: 1024px) {
+      .products-grid { max-width: 880px; margin: 0 auto; }
+    }
+
+    /* ── PRODUCT CARD ─────────────── */
+    .product-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-img-wrap {
+      flex: 0 0 108px;
+      height: 108px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .product-card:hover .product-img-wrap img { transform: scale(1.08); }
+
+    .product-body {
+      flex: 1;
+      padding: 14px 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .product-badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red);
+      background: rgba(232,34,10,0.08);
+      border-radius: 4px;
+      padding: 2px 6px;
+      width: fit-content;
+      margin-bottom: 2px;
+    }
+
+    .product-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      font-weight: 300;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .product-price {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .product-price small {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 14px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover { background: var(--red-dark); transform: scale(1.04); }
+    .add-btn:active { transform: scale(0.97); }
+    .add-btn i { font-size: 0.82rem; }
+
+    /* ── DRINKS SECTION ───────────── */
+    .drinks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 16px 8px;
+    }
+
+    @media (min-width: 640px) {
+      .drinks-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 0 20px 8px; }
+    }
+
+    @media (min-width: 1024px) {
+      .drinks-grid { max-width: 880px; margin: 0 auto; }
+    }
+
+    .drink-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drink-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .drink-img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .drink-card:hover .drink-img { transform: scale(1.1) rotate(-3deg); }
+
+    .drink-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+
+    .drink-price {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .drink-add-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--charcoal);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 12px;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .drink-add-btn:hover { background: var(--red); transform: scale(1.03); }
+    .drink-add-btn:active { transform: scale(0.97); }
+
+    /* ── SECTION SPACER ─────────── */
+    .section-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 20px 4px;
+    }
+
+    /* ── CART FAB ─────────────────── */
+    .cart-fab {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(232,34,10,0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+      min-width: 200px;
+      justify-content: center;
+    }
+
+    .cart-fab:hover {
+      transform: translateX(-50%) scale(1.04) translateY(-2px);
+      box-shadow: 0 12px 36px rgba(232,34,10,0.5);
+    }
+
+    .cart-fab:active { transform: translateX(-50%) scale(0.97); }
+
+    .cart-count-badge {
+      background: #fff;
+      color: var(--red);
+      border-radius: 100px;
+      width: 22px;
+      height: 22px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── MODAL OVERLAY ─────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    @media (min-width: 640px) {
+      .modal-overlay { align-items: center; padding: 24px; }
+    }
+
+    /* ── MODAL SHEET ─────────────── */
+    .modal-sheet {
+      background: #fff;
+      width: 100%;
+      max-width: 540px;
+      border-radius: 24px 24px 0 0;
+      padding: 0;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow: hidden;
+    }
+
+    @media (min-width: 640px) {
+      .modal-sheet { border-radius: 24px; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+
+    .modal-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--charcoal);
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--smoke);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--charcoal);
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: var(--border); }
+
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    /* ── CART ITEMS ───────────────── */
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .cart-empty i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.3;
+      display: block;
+    }
+
+    .cart-empty p { font-size: 0.9rem; }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item:last-child { border-bottom: none; }
+
+    .cart-item-info { flex: 1; min-width: 0; }
+
+    .cart-item-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-item-price {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--smoke);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--charcoal);
+      transition: background 0.15s;
+    }
+
+    .qty-btn:hover { background: var(--border); }
+
+    .qty-btn.minus:hover { color: var(--red); }
+
+    .qty-val {
+      min-width: 28px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .cart-item-total {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      min-width: 64px;
+      text-align: right;
+    }
+
+    /* ── MODAL FOOTER ─────────────── */
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .order-total-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+    .order-total-value {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--charcoal);
+    }
+
+    .address-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .address-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      background: var(--smoke);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .address-input:focus { border-color: var(--charcoal); }
+    .address-input.error { border-color: var(--red); }
+    .address-input::placeholder { color: var(--text-muted); }
+
+    .address-warn {
+      font-size: 0.75rem;
+      color: var(--red);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .address-warn.show { display: block; }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 15px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: filter 0.2s ease, transform 0.15s ease;
+    }
+
+    .checkout-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .checkout-btn:active { transform: scale(0.98); }
+
+    /* ── EXTRAS (Porções) SECTION ─── */
+    .extras-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 0 16px 8px;
+    }
+
+    @media (min-width: 640px) {
+      .extras-grid { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px 8px; }
+    }
+
+    @media (min-width: 1024px) {
+      .extras-grid { max-width: 880px; margin: 0 auto; }
+    }
+
+    .extra-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      gap: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .extra-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .extra-emoji {
+      font-size: 2.2rem;
+      flex-shrink: 0;
+    }
+
+    .extra-info { flex: 1; }
+
+    .extra-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .extra-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-top: 2px;
+    }
+
+    .extra-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .extra-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .extra-btn {
+      background: var(--charcoal);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .extra-btn:hover { background: var(--red); }
+
+    /* ── FOOTER INFO ─────────────── */
+    .info-strip {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+    }
+
+    .info-strip strong { color: #fff; }
+
+    /* ── SCROLL ANIMATIONS ────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Stagger delays */
+    .product-card:nth-child(1) { transition-delay: 0.05s; }
+    .product-card:nth-child(2) { transition-delay: 0.10s; }
+    .product-card:nth-child(3) { transition-delay: 0.15s; }
+    .product-card:nth-child(4) { transition-delay: 0.20s; }
+    .drink-card:nth-child(1) { transition-delay: 0.05s; }
+    .drink-card:nth-child(2) { transition-delay: 0.10s; }
+    .drink-card:nth-child(3) { transition-delay: 0.15s; }
+    .drink-card:nth-child(4) { transition-delay: 0.20s; }
+  </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
-        <div class="w-full h-full flex flex-col justify-center items-center">
-            <img src="/assets/logo.png" 
-            alt="Logo DevBurguer"
-            class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
-            />
-
-            <h1 class="text-4xl mt-4 mb-2 font-bold text-white">
-                Insano Burguer
-            </h1>
-
-            <span class="text-white font-medium">R. Pedro Martin 635, Presidente Prudente - SP</span>
-
-            <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
-                <span class="text-white font-medium">Seg á Dom - 18:00 as 22:00</span>
-            </div>
-
-        </div>
-    </header>
-  <!-- FIM HEADER -->
-
-  <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
-    Conheça nosso Cardápio
-  </h2>
-
-  <!-- INICIO MENU -->
-   <div id="menu">
-        <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
-            <!-- PRODUTO ITEM  -->
-                <div class="flex gap-2 justify-center">
-                    <img 
-                    src="./assets/hamb-1.png" 
-                    alt="Hamburguer Smash"
-                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-                    >
-
-                    <div>
-                        <p class="font-bold">Hamburguer Smash</p>
-                        <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                        <div class="flex items-center gap-2 justify-between mt-3">
-                            <p class="font-bold text-lg">R$ 18.90</p>
-                            <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Smash" data-price="18.90">
-                                <i class="fa fa-cart-plus text-lg text-white"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-2.png" 
-                alt="Hamburguer Bacon"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Hamburguer Bacon</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 32.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Bacon" data-price="32.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-3.png" 
-                alt="Hamburguer Duplo"
-                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Hamburguer Duplo</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 35.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Duplo" data-price="35.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-4.png" 
-                alt="Chicken Burguer"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Chicken Burguer</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 30.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Chicken Burguer" data-price="30.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-5.png" 
-                alt="Hamburguer Super"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Hamburguer Super</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 39.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Super" data-price="39.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-6.png" 
-                alt="Burguer Triplo"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Burguer Triplo</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 35.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Burguer Triplo" data-price="35.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-7.png" 
-                alt="Burguer da Casa"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Burguer da Casa</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 25.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Burguer da Casa" data-price="25.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-
-            <!-- PRODUTO ITEM  -->
-            <div class="flex gap-2 justify-center">
-                <img 
-                src="./assets/hamb-8.png" 
-                alt="Burguer Vegan"
-                class="w-28 h-28  rounded-md hover:scale-110 hover:-rotate-2 duration-200"
-                >
-
-                <div>
-                    <p class="font-bold">Burguer Vegan</p>
-                    <p class="text-sm">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 19.90</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Burguer Vegan" data-price="19.90">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM PRODUTO ITEM  -->
-        </main>
-        
-        <div class="mx-auto max-w-7xl px-2 my-2">
-            <h2 class="font-bold text-3xl text-center">Bebidas</h2>
-        </div>
-
-        <!-- GRID BEBIDAS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16" id="menu">
-
-            <!-- BEBIDA ITEM  -->
-            <div class="flex gap-2 w-full">
-                <img 
-                src="./assets/refri-1.png" 
-                alt="Coca Lata"
-                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-                >
-                <div class="w-full">
-                    <p class="font-bold">Coca Lata</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 6.00</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Coca Lata" data-price="6.00">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM BEBIDA ITEM  -->
-
-            <!-- BEBIDA ITEM  -->
-            <div class="flex gap-2 w-full">
-                <img 
-                src="./assets/refri-2.png" 
-                alt="Guarana Lata"
-                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-                >
-                <div class="w-full">
-                    <p class="font-bold">Guaraná Lata</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 6.00</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Guarana Lata" data-price="6.00">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM BEBIDA ITEM  -->
-
-            <!-- BEBIDA ITEM  -->
-            <div class="flex gap-2 w-full">
-                <img 
-                src="./assets/refri4.png" 
-                alt="Coca Cola 2L"
-                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-                >
-                <div class="w-full">
-                    <p class="font-bold">Coca Cola 2L</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 6.00</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Coca Cola 2L" data-price="6.00">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM BEBIDA ITEM  -->
-
-            <!-- BEBIDA ITEM  -->
-            <div class="flex gap-2 w-full">
-                <img 
-                src="./assets/refri3.png" 
-                alt="Guaraná 2L"
-                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
-                >
-                <div class="w-full">
-                    <p class="font-bold">Guaraná 2L</p>
-
-                    <div class="flex items-center gap-2 justify-between mt-3">
-                        <p class="font-bold text-lg">R$ 6.00</p>
-                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Guaraná 2L" data-price="6.00">
-                            <i class="fa fa-cart-plus text-lg text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM BEBIDA ITEM  -->
-        </div>
-        <!-- FIM GRID BEBIDAS -->
-   </div>  
-  <!-- FIM MENU -->
-
-  <!-- INICIO MODAL  -->
-  <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden overflow-y-auto" id="cart-modal">
-
-        <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
-            <h2 class="text-center font-bold text-2xl mb-2">Meu carrinho</h2>
-
-            <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
-
-            <p class="font-bold">Total do pedido: <span id="cart-total">0,00</span></p>
-
-            <p class="font-bold mt-4">Endereço de entrega: </p>
-
-            <input 
-            type="text" 
-            placeholder="Digite seu endereço" 
-            id="address" 
-            class="w-full border-2 p-1 rounded my-1"
-            >
-            <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
-
-            <div class="flex items-center justify-between mt-5 w-full">
-                <button id="close-modal-btn" class="bg-red-600 text-white px-4 py-1 rounded">Fechar</button>
-                <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar Pedido</button>
-            </div>
-
-        </div>
+<!-- HERO HEADER -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="logo-ring">
+      <img src="./assets/logo.png" alt="Insano Burguer Logo">
+    </div>
+    <h1 class="hero-name">Insano<span>Burguer</span></h1>
+    <p class="hero-sub">R. Pedro Martin 635 · Presidente Prudente - SP</p>
+    <div class="status-badge" id="date-span">
+      <span class="status-dot"></span>
+      <span id="status-text">Seg à Dom · 18:00 às 22:00</span>
+    </div>
   </div>
-  <!-- FIM MODAL  -->
+</header>
 
+<!-- SECTION TABS -->
+<nav class="section-nav" id="section-nav">
+  <button class="tab-btn active" data-target="burgers">🍔 Burgers</button>
+  <button class="tab-btn" data-target="bebidas">🥤 Bebidas</button>
+  <button class="tab-btn" data-target="porcoes">🍟 Porções</button>
+</nav>
 
-  <!-- FOOTER  -->
-   <footer class="w-full bg-red-500 py-2 fixed bottom-0 z-40 flex items-center justify-center">
-    <button class="flex items-center gap-2 text-white font-bold" id="cart-btn">
-        (<span id="cart-count">0</span>)
-        Veja meu carrinho
-        <i class="fa fa-cart-plus text-lg text-white"></i>
-    </button>
-   </footer>
-  <!-- FIM FOOTER  -->
+<!-- MENU WRAPPER -->
+<div id="menu">
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="script.js"></script>
-  
+  <!-- ── BURGERS ────────────── -->
+  <section id="burgers">
+    <div class="section-title">Nosso <span>Menu</span></div>
+    <p class="section-subtitle">Artesanais, generosos, feitos com amor 🔥</p>
+
+    <div class="products-grid">
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-1.png" alt="Hamburguer Smash">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Clássico</span>
+          <p class="product-name">Hamburguer Smash</p>
+          <p class="product-desc">Pão de trigo, burguer 150g, queijo prato e maionese da casa</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>18,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Hamburguer Smash" data-price="18.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-2.png" alt="Hamburguer Bacon">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Popular</span>
+          <p class="product-name">Hamburguer Bacon</p>
+          <p class="product-desc">Pão de trigo, burguer 150g, queijo prato, bacon crocante</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>32,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Hamburguer Bacon" data-price="32.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-3.png" alt="Hamburguer Duplo">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Especial</span>
+          <p class="product-name">Hamburguer Duplo</p>
+          <p class="product-desc">Dois burguers 150g, queijo duplo, alface e tomate frescos</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>35,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Hamburguer Duplo" data-price="35.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-4.png" alt="Chicken Burguer">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Frango</span>
+          <p class="product-name">Chicken Burguer</p>
+          <p class="product-desc">Frango empanado crocante, queijo prato e molho especial</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>30,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Chicken Burguer" data-price="30.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-5.png" alt="Hamburguer Super">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Top</span>
+          <p class="product-name">Hamburguer Super</p>
+          <p class="product-desc">Burguer 200g, bacon, cheddar, cebola caramelizada</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>39,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Hamburguer Super" data-price="39.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-6.png" alt="Burguer Triplo">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Gigante</span>
+          <p class="product-name">Burguer Triplo</p>
+          <p class="product-desc">Três burguers, queijo triplo, alface, tomate e molho especial</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>35,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Burguer Triplo" data-price="35.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-7.png" alt="Burguer da Casa">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Exclusivo</span>
+          <p class="product-name">Burguer da Casa</p>
+          <p class="product-desc">Receita exclusiva com molho secreto da casa</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>25,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Burguer da Casa" data-price="25.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-img-wrap">
+          <img src="./assets/hamb-8.png" alt="Burguer Vegan">
+        </div>
+        <div class="product-body">
+          <span class="product-badge">Vegan</span>
+          <p class="product-name">Burguer Vegan</p>
+          <p class="product-desc">Blend vegetal, queijo vegano, rúcula e tomate seco</p>
+          <div class="product-footer">
+            <p class="product-price"><small>R$</small>19,90</p>
+            <button class="add-btn add-to-cart-btn" data-name="Burguer Vegan" data-price="19.90">
+              <i class="fa fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BEBIDAS ────────────── -->
+  <div class="section-sep"></div>
+  <section id="bebidas">
+    <div class="section-title">Nossas <span>Bebidas</span></div>
+    <p class="section-subtitle">Geladas e refrescantes pra acompanhar 🧊</p>
+
+    <div class="drinks-grid">
+
+      <div class="drink-card fade-in">
+        <img src="./assets/refri-1.png" alt="Coca Lata" class="drink-img">
+        <p class="drink-name">Coca Lata</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>6,00</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Coca Lata" data-price="6.00">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+      <div class="drink-card fade-in">
+        <img src="./assets/refri-2.png" alt="Guarana Lata" class="drink-img">
+        <p class="drink-name">Guaraná Lata</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>6,00</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Guarana Lata" data-price="6.00">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+      <div class="drink-card fade-in">
+        <img src="./assets/refri4.png" alt="Coca Cola 2L" class="drink-img">
+        <p class="drink-name">Coca Cola 2L</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>14,00</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Coca Cola 2L" data-price="14.00">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+      <div class="drink-card fade-in">
+        <img src="./assets/refri3.png" alt="Guaraná 2L" class="drink-img">
+        <p class="drink-name">Guaraná 2L</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>12,00</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Guaraná 2L" data-price="12.00">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+      <!-- Bebidas extras de exemplo -->
+      <div class="drink-card fade-in">
+        <div style="font-size:2.8rem;height:72px;display:flex;align-items:center;justify-content:center;">🍺</div>
+        <p class="drink-name">Cerveja Lata</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>8,00</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Cerveja Lata" data-price="8.00">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+      <div class="drink-card fade-in">
+        <div style="font-size:2.8rem;height:72px;display:flex;align-items:center;justify-content:center;">💧</div>
+        <p class="drink-name">Água Mineral</p>
+        <p class="drink-price"><small style="font-size:0.65rem;color:var(--text-muted)">R$</small>3,50</p>
+        <button class="drink-add-btn add-to-cart-btn" data-name="Água Mineral" data-price="3.50">
+          <i class="fa fa-plus"></i> Adicionar
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── PORÇÕES ────────────── -->
+  <div class="section-sep"></div>
+  <section id="porcoes">
+    <div class="section-title">Nossas <span>Porções</span></div>
+    <p class="section-subtitle">Para completar ainda mais o seu pedido 😋</p>
+
+    <div class="extras-grid">
+
+      <div class="extra-card fade-in">
+        <span class="extra-emoji">🍟</span>
+        <div class="extra-info">
+          <p class="extra-name">Batata Frita</p>
+          <p class="extra-desc">Crocante por fora, macia por dentro · 200g</p>
+        </div>
+        <div class="extra-footer">
+          <p class="extra-price">R$ 12,90</p>
+          <button class="extra-btn add-to-cart-btn" data-name="Batata Frita" data-price="12.90">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="extra-card fade-in">
+        <span class="extra-emoji">🧀</span>
+        <div class="extra-info">
+          <p class="extra-name">Onion Rings</p>
+          <p class="extra-desc">Anéis de cebola empanados · 8 unidades</p>
+        </div>
+        <div class="extra-footer">
+          <p class="extra-price">R$ 15,90</p>
+          <button class="extra-btn add-to-cart-btn" data-name="Onion Rings" data-price="15.90">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="extra-card fade-in">
+        <span class="extra-emoji">🌭</span>
+        <div class="extra-info">
+          <p class="extra-name">Nuggets</p>
+          <p class="extra-desc">Nuggets de frango crocante · 10 unidades</p>
+        </div>
+        <div class="extra-footer">
+          <p class="extra-price">R$ 17,90</p>
+          <button class="extra-btn add-to-cart-btn" data-name="Nuggets" data-price="17.90">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="extra-card fade-in">
+        <span class="extra-emoji">🥗</span>
+        <div class="extra-info">
+          <p class="extra-name">Salada Caesar</p>
+          <p class="extra-desc">Alface, croutons, parmesão e molho Caesar</p>
+        </div>
+        <div class="extra-footer">
+          <p class="extra-price">R$ 19,90</p>
+          <button class="extra-btn add-to-cart-btn" data-name="Salada Caesar" data-price="19.90">Adicionar</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- fim #menu -->
+
+<!-- INFO FOOTER -->
+<div class="info-strip">
+  <strong>Insano Burguer</strong> · Seg a Dom, 18h–22h<br>
+  R. Pedro Martin 635, Presidente Prudente - SP<br>
+  Pedidos pelo WhatsApp após finalizar o carrinho 🍔
+</div>
+
+<!-- CART FAB -->
+<button class="cart-fab" id="cart-btn">
+  <div class="cart-count-badge" id="cart-count">0</div>
+  <span>Ver meu carrinho</span>
+  <i class="fa fa-shopping-bag"></i>
+</button>
+
+<!-- MODAL CARRINHO -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h2 class="modal-title">Carrinho</h2>
+      <button class="modal-close" id="close-modal-btn"><i class="fa fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div id="cart-items"></div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="order-total-row">
+        <span class="order-total-label">Total do pedido</span>
+        <span class="order-total-value" id="cart-total">R$ 0,00</span>
+      </div>
+
+      <label class="address-label">Endereço de entrega</label>
+      <input
+        type="text"
+        placeholder="Rua, número, bairro..."
+        id="address"
+        class="address-input"
+      >
+      <p class="address-warn" id="address-warn">⚠️ Por favor, informe o endereço completo.</p>
+
+      <button id="checkout-btn" class="checkout-btn">
+        <i class="fab fa-whatsapp" style="font-size:1.1rem"></i>
+        Finalizar pelo WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+// ── DOM REFS ─────────────────────────────────
+const menu = document.getElementById("menu")
+const cartBtn = document.getElementById("cart-btn")
+const cartModal = document.getElementById("cart-modal")
+const cartItemsContainer = document.getElementById("cart-items")
+const cartTotal = document.getElementById("cart-total")
+const checkoutBtn = document.getElementById("checkout-btn")
+const closeModalBtn = document.getElementById("close-modal-btn")
+const cartCounter = document.getElementById("cart-count")
+const addressInput = document.getElementById("address")
+const addressWarn = document.getElementById("address-warn")
+
+let cart = []
+
+// ── TABS ─────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    const target = document.getElementById(btn.dataset.target)
+    if (target) {
+      const offset = 60
+      const top = target.getBoundingClientRect().top + window.scrollY - offset
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+  })
+})
+
+// ── MODAL OPEN ───────────────────────────────
+cartBtn.addEventListener("click", function(){
+  updateCartModal()
+  cartModal.classList.add("active")
+  document.body.style.overflow = "hidden"
+})
+
+// ── MODAL CLOSE ──────────────────────────────
+cartModal.addEventListener("click", function(event){
+  if(event.target === cartModal){ closeModal() }
+})
+
+closeModalBtn.addEventListener("click", closeModal)
+
+function closeModal(){
+  cartModal.classList.remove("active")
+  document.body.style.overflow = ""
+}
+
+// ── ADD TO CART ──────────────────────────────
+menu.addEventListener("click", function(event){
+  const parentButton = event.target.closest(".add-to-cart-btn")
+  if(parentButton){
+    const name = parentButton.getAttribute("data-name")
+    const price = parseFloat(parentButton.getAttribute("data-price"))
+    addToCart(name, price)
+  }
+})
+
+function addToCart(name, price){
+  const existingItem = cart.find(item => item.name === name)
+  if(existingItem){
+    existingItem.qtd += 1
+  } else {
+    cart.push({ name, price, qtd: 1 })
+  }
+  updateCartModal()
+  showToast("✓ " + name + " adicionado!", "#22C55E")
+}
+
+function showToast(text, bg){
+  Toastify({
+    text,
+    duration: 1800,
+    close: false,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: false,
+    style: { background: bg, borderRadius: "100px", fontSize: "0.82rem", fontWeight: "600", padding: "10px 18px" },
+  }).showToast()
+}
+
+// ── UPDATE MODAL ─────────────────────────────
+function updateCartModal(){
+  cartItemsContainer.innerHTML = ""
+  let total = 0
+
+  if(cart.length === 0){
+    cartItemsContainer.innerHTML = `
+      <div class="cart-empty">
+        <i class="fa fa-shopping-bag"></i>
+        <p>Seu carrinho está vazio</p>
+        <p style="margin-top:6px;font-size:0.78rem">Adicione itens do cardápio para começar 🍔</p>
+      </div>`
+    cartCounter.textContent = "0"
+    cartTotal.textContent = "R$ 0,00"
+    return
+  }
+
+  cart.forEach(item => {
+    const el = document.createElement("div")
+    el.classList.add("cart-item")
+    el.innerHTML = `
+      <div class="cart-item-info">
+        <p class="cart-item-name">${item.name}</p>
+        <p class="cart-item-price">R$ ${item.price.toFixed(2).replace('.',',')} · un</p>
+      </div>
+      <div class="cart-item-controls">
+        <button class="qty-btn minus remove-cart-btn" data-name="${item.name}" title="Remover um">−</button>
+        <span class="qty-val">${item.qtd}</span>
+        <button class="qty-btn plus add-one-btn" data-name="${item.name}" data-price="${item.price}" title="Adicionar um">+</button>
+      </div>
+      <div class="cart-item-total">R$ ${(item.price * item.qtd).toFixed(2).replace('.',',')}</div>
+    `
+    total += item.price * item.qtd
+    cartItemsContainer.appendChild(el)
+  })
+
+  cartTotal.textContent = total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+  cartCounter.textContent = cart.reduce((sum, i) => sum + i.qtd, 0)
+}
+
+// ── REMOVE / ADD ONE ─────────────────────────
+cartItemsContainer.addEventListener("click", function(event){
+  const removeBtn = event.target.closest(".remove-cart-btn")
+  const addOneBtn = event.target.closest(".add-one-btn")
+  if(removeBtn){ removeItemCart(removeBtn.getAttribute("data-name")) }
+  if(addOneBtn){
+    const name = addOneBtn.getAttribute("data-name")
+    const price = parseFloat(addOneBtn.getAttribute("data-price"))
+    addToCart(name, price)
+  }
+})
+
+function removeItemCart(name){
+  const index = cart.findIndex(item => item.name === name)
+  if(index !== -1){
+    if(cart[index].qtd > 1){ cart[index].qtd -= 1 }
+    else { cart.splice(index, 1) }
+    updateCartModal()
+  }
+}
+
+// ── ADDRESS VALIDATION ───────────────────────
+addressInput.addEventListener("input", function(){
+  if(this.value !== ""){
+    this.classList.remove("error")
+    addressWarn.classList.remove("show")
+  }
+})
+
+// ── CHECKOUT ─────────────────────────────────
+checkoutBtn.addEventListener("click", function(){
+  if(!checkOpen()){
+    showToast("😴 Restaurante fechado no momento", "#ef4444")
+    return
+  }
+  if(cart.length === 0){
+    showToast("Carrinho vazio!", "#ef4444")
+    return
+  }
+  if(addressInput.value.trim() === ""){
+    addressWarn.classList.add("show")
+    addressInput.classList.add("error")
+    addressInput.focus()
+    return
+  }
+
+  const cartItems = cart.map(item =>
+    `▸ ${item.name} x${item.qtd} — R$${(item.price * item.qtd).toFixed(2)}`
+  ).join("\n")
+
+  const total = cart.reduce((s, i) => s + i.price * i.qtd, 0)
+  const message = encodeURIComponent(
+    `🍔 *Pedido - Insano Burguer*\n\n${cartItems}\n\n💰 *Total: ${total.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}*\n\n📍 Endereço: ${addressInput.value.trim()}`
+  )
+  const phone = "18981312797"
+  window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
+
+  cart = []
+  updateCartModal()
+  closeModal()
+})
+
+// ── STATUS CHECK ─────────────────────────────
+function checkOpen(){
+  const hora = new Date().getHours()
+  return hora >= 18 && hora < 22
+}
+
+const statusBadge = document.getElementById("date-span")
+const isOpen = checkOpen()
+if(isOpen){
+  statusBadge.classList.add("open")
+  statusBadge.classList.remove("closed")
+  document.getElementById("status-text").textContent = "Aberto agora · até 22:00"
+} else {
+  statusBadge.classList.add("closed")
+  statusBadge.classList.remove("open")
+  document.getElementById("status-text").textContent = "Fechado · Abre às 18:00"
+}
+
+// ── SCROLL REVEAL ────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add("visible") })
+}, { threshold: 0.1 })
+
+document.querySelectorAll(".fade-in").forEach(el => observer.observe(el))
+
+// ── SWIPE DOWN TO CLOSE MODAL ────────────────
+let startY = 0
+const sheet = document.querySelector(".modal-sheet")
+
+sheet.addEventListener("touchstart", e => { startY = e.touches[0].clientY }, { passive: true })
+sheet.addEventListener("touchend", e => {
+  if(e.changedTouches[0].clientY - startY > 80) closeModal()
+}, { passive: true })
+</script>
+
 </body>
 </html>
